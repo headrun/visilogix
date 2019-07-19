@@ -1,0 +1,126 @@
+{'cost_factor': 1, 'flow_factor': 1}
+
+--------------------------------------------
+Warning: your license will expire in 6 days
+--------------------------------------------
+
+Changed value of parameter LogFile to opt_runs/sample/gurobi.log
+   Prev: gurobi.log  Default: 
+Parameter OutputFlag unchanged
+   Value: 1  Min: 0  Max: 1  Default: 1
+...  Number of variables: 702
+Optimize a model with 57 rows, 702 columns and 909 nonzeros
+Variable types: 675 continuous, 27 integer (27 binary)
+Coefficient statistics:
+  Matrix range     [3e-01, 8e+03]
+  Objective range  [4e+02, 1e+05]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 2e+04]
+Found heuristic solution: objective 7.432144e+09
+Presolve removed 4 rows and 511 columns
+Presolve time: 0.00s
+Presolved: 53 rows, 191 columns, 382 nonzeros
+Variable types: 180 continuous, 11 integer (11 binary)
+
+Root relaxation: objective 5.037546e+09, 87 iterations, 0.00 seconds
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0 5.0375e+09    0    2 7.4321e+09 5.0375e+09  32.2%     -    0s
+H    0     0                    5.140697e+09 5.0375e+09  2.01%     -    0s
+     0     0 5.0774e+09    0    2 5.1407e+09 5.0774e+09  1.23%     -    0s
+*    0     0               0    5.111619e+09 5.1116e+09  0.00%     -    0s
+
+Cutting planes:
+  Gomory: 1
+  Implied bound: 2
+  MIR: 1
+  Flow cover: 1
+
+Explored 1 nodes (103 simplex iterations) in 0.00 seconds
+Thread count was 4 (of 4 available processors)
+
+Solution count 3: 5.11162e+09 5.1407e+09 7.43214e+09 
+No other solutions better than 5.11162e+09
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 5.111619425124e+09, best bound 5.111619425124e+09, gap 0.0000%
+...  Optimal Cost: 5,111,619,425.12
+Network Flow: 1
+          ('FC01', 'LN01', 'CD02', 'P1') :       3,732.94
+          ('FC01', 'LN01', 'CD04', 'P1') :       17,535.0
+          ('FC01', 'LN01', 'CD05', 'P1') :         332.06
+          ('FC01', 'LN02', 'CD04', 'P5') :        4,300.0
+          ('FC01', 'LN02', 'CD05', 'P5') :        6,500.0
+            ('FC02', 'L2', 'CD01', 'P2') :        2,032.0
+            ('FC02', 'L2', 'CD02', 'P2') :        4,186.0
+            ('FC02', 'L2', 'CD04', 'P2') :        7,282.0
+            ('FC02', 'L4', 'CD01', 'P4') :        9,900.0
+            ('FC02', 'L5', 'CD03', 'P3') :       11,451.0
+            ('FC02', 'L5', 'CD04', 'P3') :       11,949.0
+            ('FC02', 'L7', 'CD01', 'P5') :       11,824.0
+            ('FC02', 'L7', 'CD03', 'P5') :           20.0
+            ('FC02', 'L9', 'CD01', 'P4') :       12,559.0
+            ('FC02', 'L9', 'CD03', 'P4') :        6,953.0
+            ('FC02', 'L9', 'CD04', 'P4') :        5,163.0
+            ('FC03', 'L2', 'CD05', 'P2') :       10,500.0
+            ('FC03', 'L3', 'CD01', 'P3') :        9,234.0
+            ('FC03', 'L5', 'CD01', 'P3') :        6,148.0
+            ('FC03', 'L5', 'CD05', 'P3') :        6,683.0
+            ('FC03', 'L7', 'CD05', 'P5') :       10,857.0
+            ('FC03', 'L9', 'CD04', 'P4') :       14,293.0
+            ('FC03', 'L9', 'CD05', 'P1') :         996.94
+            ('FC03', 'L9', 'CD05', 'P4') :        3,296.0
+            ('FC03', 'L9', 'CD05', 'P5') :          895.0
+          ('FC04', 'LN01', 'CD02', 'P3') :        7,477.0
+          ('FC05', 'LN01', 'CD01', 'P2') :        6,901.0
+          ('FC05', 'LN01', 'CD03', 'P2') :        8,987.0
+          ('FC05', 'LN02', 'CD01', 'P1') :       15,927.0
+          ('FC05', 'LN02', 'CD02', 'P1') :       9,997.06
+          ('FC05', 'LN02', 'CD03', 'P1') :            1.0
+          ('FC05', 'LN03', 'CD02', 'P4') :       17,140.0
+          ('FC05', 'LN03', 'CD03', 'P4') :        7,535.0
+          ('FC05', 'LN04', 'CD01', 'P5') :        9,536.0
+          ('FC05', 'LN04', 'CD02', 'P5') :       13,832.0
+          ('FC05', 'LN04', 'CD04', 'P5') :        5,255.0
+
+Factories unused: []
+Factories used: [('FC01', 2), ('FC02', 5), ('FC03', 9), ('FC04', 1), ('FC05', 4)]
+
+Lines:
+    ('FC01', 'LN01') : 100.00%
+    ('FC01', 'LN02') : 100.00%
+      ('FC02', 'L1') : .....close
+      ('FC02', 'L2') : 100.00%
+      ('FC02', 'L3') : .....close
+      ('FC02', 'L4') : 100.00%
+      ('FC02', 'L5') : 100.00%
+      ('FC02', 'L6') : .....close
+      ('FC02', 'L7') : 100.00%
+      ('FC02', 'L8') : .....close
+      ('FC02', 'L9') : 100.00%
+    ('FC02', 'LN01') : .....close
+    ('FC02', 'LN02') : .....close
+      ('FC03', 'L1') : .....close
+      ('FC03', 'L2') : 36.68%
+      ('FC03', 'L3') : 51.98%
+      ('FC03', 'L4') : .....close
+      ('FC03', 'L5') : 100.00%
+      ('FC03', 'L6') : .....close
+      ('FC03', 'L7') : 100.00%
+      ('FC03', 'L8') : .....close
+      ('FC03', 'L9') : 100.00%
+    ('FC04', 'LN01') : 50.50%
+    ('FC05', 'LN01') : 88.27%
+    ('FC05', 'LN02') : 99.33%
+    ('FC05', 'LN03') : 100.00%
+    ('FC05', 'LN04') : 100.00%
+
+
+Solution quality statistics for model Unnamed :
+  Maximum violation:
+    Bound       : 0.00000000e+00
+    Constraint  : 9.09494702e-13 (R13)
+    Integrality : 0.00000000e+00
+Time Taken: 0.10744881629943848
