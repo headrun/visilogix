@@ -1,7 +1,5 @@
-import os, sys, traceback, math
+import os, sys, math
 from optparse import OptionParser
-
-from gurobipy import *
 
 from utils import main, makedir_p, ExcelWrap
 
@@ -49,11 +47,10 @@ class Optimizer:
         self.set_constraints()
         self.set_objective()
 
-        self.model.update()
-        self.model.optimize()
+        self.model.solve()
+        self.model.save(self.options.output_dirname)
 
         self.output_solution()
-        self.output_model()
 
     def close(self):
         pass
@@ -73,9 +70,11 @@ class Optimizer:
             setattr(self, name, ret)
 
     def init_model(self):
-        self.model = Model()
         name = self.options.model
         cfg = self.config['model'].get(name, {})
+
+        self.model = getattr(__import__('%s_model' % name), '%sModel' % name.capitalize())()
+        self.model.init(cfg)
 
         for param, value in cfg.get('params', {}).items():
             if param.lower() == 'logfile':
@@ -96,9 +95,9 @@ class Optimizer:
             for d    in self.ns_depot
             for p    in self.ns_product
         ]
-        self.m_flow = self.model.addVars(keys, vtype=GRB.CONTINUOUS, name='flow')
+        self.m_flow = self.model.addVars(keys, vtype=self.model.CONST.CONTINUOUS, name='flow')
 
-        self.m_is_valid_line = self.model.addVars(self.ky_factory_lines, vtype=GRB.BINARY, name='is_line')
+        self.m_is_valid_line = self.model.addVars(self.ky_factory_lines, vtype=self.model.CONST.BINARY, name='is_line')
 
         print('...  Number of variables:', (len(keys)+len(self.ky_factory_lines)))
 
@@ -119,7 +118,7 @@ class Optimizer:
             for p in self.ns_product:
                 if not capacity_lambda((f, l, p)):
                     for d in self.ns_depot:
-                        self.m_flow[f, l, d, p].setAttr(GRB.Attr.UB, 0)
+                        self.model.setValue(self.m_flow[f, l, d, p], 0)
 
             self.model.addConstr(
                 sum([
@@ -169,11 +168,11 @@ class Optimizer:
                 for d in self.ns_depot
                 for p in self.ns_product
             ),
-            GRB.MINIMIZE
+            self.model.CONST.MINIMIZE
         )
 
     def output_solution(self):
-        if self.model.status != GRB.status.OPTIMAL:
+        if not self.model.isOptimal():
             print('...  Non Optimal output:', self.model.status)
             return
 
@@ -239,16 +238,6 @@ class Optimizer:
             ['Factory', 'Line', 'Depot', 'Product', 'Ton'],
             [(f, l, d, p, v) for (f, l, d, p), v in val_dict.items() if v],
         )
-
-    def output_model(self):
-        for ext in ('lp', 'sol'):
-            filename = 'model.%s' % ext
-            try:
-                self.model.write(os.path.join(self.options.output_dirname, filename))
-            except:
-                traceback.print_exc()
-
-        self.model.printQuality()
 
     def check_constraints(self):
         for f in self.ns_factory:
