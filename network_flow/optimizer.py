@@ -14,6 +14,7 @@ class Optimizer:
         parser.add_option("-c", "--config-file", dest="config_filename", help="Config FILE", metavar="FILE")
         parser.add_option("-i", "--input-file", dest="input_filename", help="xlsx FILE to read", metavar="FILE")
         parser.add_option("-o", "--output-dir", dest="output_dirname", help="output directory name", metavar="FILE")
+        parser.add_option("-m", "--model", dest="model", help="Name of the Model", default='gurobi')
         parser.add_option("-f", "--force", dest="force", help="Force write output", default=False, action='store_true')
 
         (self.options, args) = parser.parse_args()
@@ -54,12 +55,6 @@ class Optimizer:
         self.output_solution()
         self.output_model()
 
-        if self.model.status == GRB.status.INF_OR_UNBD:
-            self.model.setParams(GRB.Param.Presolve, 0)
-            self.model.optimize()
-            self.output_solution()
-            self.output_model()
-
     def close(self):
         pass
 
@@ -79,8 +74,10 @@ class Optimizer:
 
     def init_model(self):
         self.model = Model()
+        name = self.options.model
+        cfg = self.config['model'].get(name, {})
 
-        for param, value in self.config_model.get('params', {}).items():
+        for param, value in cfg.get('params', {}).items():
             if param.lower() == 'logfile':
                 value = value.format(output_dirname=self.options.output_dirname)
             self.model.setParam(param, value)
@@ -182,7 +179,7 @@ class Optimizer:
 
         self.output_obj = ExcelWrap( self.output_filename, mode='write')
 
-        val = round(self.model.ObjVal*self.config_output.get('cost_factor', 1), 2)
+        val = round(self.model.ObjVal*self.config_output.get('obj_factor', 1), 2)
         print('...  Optimal Cost:', f'{val:,}')
         self.output_obj.write_sheet(
             'Optimal Cost',

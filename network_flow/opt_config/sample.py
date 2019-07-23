@@ -1,12 +1,14 @@
 {
     'model': {
-        'params': {
-            'LogFile': '{output_dirname}/gurobi.log',
-            'OutputFlag': True,
+        'gurobi': {
+            'params': {
+                'LogFile': '{output_dirname}/gurobi.log',
+                'OutputFlag': True,
+            },
         },
     },
     'output': {
-        'cost_factor': 1,
+        'obj_factor': 1,
         'flow_factor': 1,
     },
     'data': {
