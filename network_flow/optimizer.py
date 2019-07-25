@@ -110,9 +110,9 @@ class Optimizer:
                 self.m_is_valid_line.sum(f, '*') <= self.factory_max_line.get(f, num_lines)
             )
 
+        capacity_lambda = lambda x: self.product_capacity.get(x, 0)
+        self.hours_per_shift = self.config_data['line_shifts']['hours']
         for f, l in self.ky_factory_lines:
-            capacity_lambda = lambda x: self.product_capacity.get(x, 0)
-            self.hours_per_shift = self.config_data['line_shifts']['hours']
 
             # flow <= supply
             for p in self.ns_product:
@@ -124,7 +124,7 @@ class Optimizer:
                 sum([
                     (self.m_flow.sum(f, l, '*', p) * self.hours_per_shift) / capacity_lambda((f, l, p))
                     for p in self.ns_product
-                    if capacity_lambda((f, l, p))
+                        if capacity_lambda((f, l, p))
                 ]) <= self.m_is_valid_line[f, l] * self.line_shifts[f, l] * self.hours_per_shift
             )
 
@@ -173,7 +173,7 @@ class Optimizer:
 
     def output_solution(self):
         if not self.model.isOptimal():
-            print('...  Non Optimal output:', self.model.status)
+            print('...  Non Optimal output:', self.model.statusName())
             return
 
         self.output_obj = ExcelWrap( self.output_filename, mode='write')
@@ -193,7 +193,7 @@ class Optimizer:
         self.output_obj.save()
 
     def output_factory_capacity(self):
-        val = [(f, round(self.m_is_valid_line.sum(f, '*').getValue())) for f in self.ns_factory]
+        val = [(f, round(self.model.getSumValue(self.m_is_valid_line.sum(f, '*')))) for f in self.ns_factory]
         print('Factories unused:', [(f, v) for f, v in val if not v])
         print('Factories used:',   [(f, v) for f, v in val if v])
         print()
@@ -208,12 +208,12 @@ class Optimizer:
         values = []
         for (f, l), val in self.m_is_valid_line.items():
             pct = round((sum(
-                (self.m_flow.sum(f, l, '*', p).getValue() * self.hours_per_shift) / self.product_capacity[f, l, p]
+                (self.model.getSumValue(self.m_flow.sum(f, l, '*', p)) * self.hours_per_shift) / self.product_capacity[f, l, p]
                 for p in self.ns_product
                 if (f, l, p) in self.product_capacity
             ) * 100) / (self.line_shifts[f, l] * self.hours_per_shift), 2)
             values.append((f, l, pct))
-            print('%20s' % str((f, l)), ':', '%2.2f%%' % pct if val.X and pct else '.....close')
+            print('%20s' % str((f, l)), ':', '%2.2f%%' % pct if self.model.getValue(val) and pct else '.....close')
         print()
         self.output_obj.write_sheet(
             'Factory Line',
@@ -224,7 +224,7 @@ class Optimizer:
     def output_flow(self):
         flow_factor = self.config_output.get('flow_factor', 1)
         print('Network Flow:', flow_factor)
-        val_dict = {key: round(val.X*flow_factor, 2) for key, val in self.m_flow.items()}
+        val_dict = {key: round(self.model.getValue(var)*flow_factor, 2) for key, var in self.m_flow.items()}
         for key, val in val_dict.items():
             if val:
                 print('%40s' % str(key), ':', '%14s' % f'{val:,}')
@@ -254,13 +254,13 @@ class Optimizer:
             for p in self.ns_product:
                 if not capacity_lambda((f, l, p)):
                     for d in self.ns_depot:
-                        assert self.m_flow[f, l, d, p].X == 0
+                        assert self.model.getValue(self.m_flow[f, l, d, p]) == 0
 
             assert sum([
                     (self.m_flow.sum(f, l, '*', p) * self.hours_per_shift) / capacity_lambda((f, l, p))
                     for p in self.ns_product
                     if capacity_lambda((f, l, p))
-                ]) <= self.m_is_valid_line[f, l].X * self.line_shifts[f, l] * self.hours_per_shift
+                ]) <= self.model.getValue(self.m_is_valid_line[f, l]) * self.line_shifts[f, l] * self.hours_per_shift
 
         for d in self.ns_depot:
             for p in self.ns_product:

@@ -19,6 +19,15 @@ class GurobiModel(Model):
     def isOptimal(self):
         return self.status == GRB.Status.OPTIMAL
 
+    def statusName(self):
+        return self.status
+
+    def getValue(self, var):
+        return var.X
+
+    def getSumValue(self, sum_var):
+        return sum_var.getValue()
+
     def save(self, dirname):
         for ext in ('lp', 'sol'):
             filename = 'model.%s' % ext
