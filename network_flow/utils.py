@@ -41,8 +41,9 @@ class ExcelWrap:
 
         return lines
 
-    def read_dict(self, sheet, key=None, value=None, start_row=1, value_func=None, **kwargs):
+    def read_dict(self, sheet, key=None, value=None, value_type='int', start_row=1, value_func=None, **kwargs):
         sheet_obj = self.book.sheet_by_name(sheet)
+        value_type_func = lambda x: int(x) if value_type == 'int' and x else x
         
         dt = {}
         for r in range(start_row, sheet_obj.nrows):
@@ -56,9 +57,9 @@ class ExcelWrap:
                     continue
 
             if isinstance(value, int):
-                value_row = sheet_obj.cell_value(r, value-1)
+                value_row = value_type_func(sheet_obj.cell_value(r, value-1))
             else:
-                value_row = {j: sheet_obj.cell_value(r, c-1) for j, c in value.items()}
+                value_row = {j: value_type_func(sheet_obj.cell_value(r, c-1)) for j, c in value.items()}
 
             dt[key_row] = value_func(value_row) if value_func else value_row
         return dt

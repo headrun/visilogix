@@ -26,6 +26,7 @@
             'sheet': 'Factory Line',
             'key': (1, 2),
             'value': 3,
+            'value_type': 'str',
         },
         'line_capex': { # cost per year
             'sheet': 'Factory Line',
@@ -47,6 +48,7 @@
             'sheet': 'Product',
             'key': 1,
             'value': 2,
+            'value_type': 'float',
         },
         'product_capacity': { # ton per shift
             'sheet': 'Product Info',
