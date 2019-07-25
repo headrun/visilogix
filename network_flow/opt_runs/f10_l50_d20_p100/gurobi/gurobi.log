@@ -1,7 +1,7 @@
 
-Gurobi 8.1.1 (linux64) logging started Sat Jul 20 01:07:49 2019
+Gurobi 8.1.1 (linux64) logging started Thu Jul 25 17:13:36 2019
 
-Changed value of parameter LogFile to opt_runs/f10_l50_d20_p100/gurobi.log
+Changed value of parameter LogFile to opt_runs/f10_l50_d20_p100/gurobi/gurobi.log
    Prev: gurobi.log  Default: 
 Parameter OutputFlag unchanged
    Value: 1  Min: 0  Max: 1  Default: 1
@@ -13,11 +13,11 @@ Coefficient statistics:
   Bounds range     [1e+00, 1e+00]
   RHS range        [1e+00, 1e+03]
 Presolve removed 1204 rows and 60006 columns
-Presolve time: 0.52s
+Presolve time: 0.55s
 Presolved: 856 rows, 40044 columns, 80086 nonzeros
 Variable types: 40002 continuous, 42 integer (42 binary)
 
-Root relaxation: objective 7.897144e+09, 1663 iterations, 0.10 seconds
+Root relaxation: objective 7.897144e+09, 1663 iterations, 0.13 seconds
 
     Nodes    |    Current Node    |     Objective Bounds      |     Work
  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
@@ -75,7 +75,7 @@ Cutting planes:
   MIR: 13
   Flow cover: 119
 
-Explored 1 nodes (6421 simplex iterations) in 5.17 seconds
+Explored 1 nodes (6421 simplex iterations) in 5.14 seconds
 Thread count was 4 (of 4 available processors)
 
 Solution count 5: 8.357e+09 8.9067e+09 9.58176e+09 ... 9.85999e+09
