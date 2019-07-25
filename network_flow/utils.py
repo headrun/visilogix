@@ -43,7 +43,7 @@ class ExcelWrap:
 
     def read_dict(self, sheet, key=None, value=None, value_type='int', start_row=1, value_func=None, **kwargs):
         sheet_obj = self.book.sheet_by_name(sheet)
-        value_type_func = lambda x: int(x) if value_type == 'int' and x else x
+        value_type_func = lambda x: int(x) if value_type == 'int' and x != '' else x
         
         dt = {}
         for r in range(start_row, sheet_obj.nrows):
