@@ -11,6 +11,7 @@ class DataGenerator:
         parser = OptionParser()
         parser.add_option("-c", "--config-file", dest="config_filename", help="Config FILE", metavar="FILE")
         parser.add_option("-o", "--output-file", dest="output_filename", help="xlsx FILE to output", metavar="FILE")
+        parser.add_option("-f", "--force", dest="force", help="Force write output", default=False, action='store_true')
 
         (self.options, args) = parser.parse_args()
 
@@ -22,7 +23,7 @@ class DataGenerator:
         if not os.path.exists(self.options.config_filename):
             parser.print_help()
             parser.error('File - ' + self.options.config_filename + ' is missing.')
-        if os.path.exists(self.options.output_filename):
+        if not self.options.force and os.path.exists(self.options.output_filename):
             parser.print_help()
             parser.error('File - ' + self.options.output_filename + ' already exists.')
 
