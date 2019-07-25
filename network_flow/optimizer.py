@@ -95,7 +95,8 @@ class Optimizer:
             for d    in self.ns_depot
             for p    in self.ns_product
         ]
-        self.m_flow = self.model.addVars(keys, vtype=self.model.CONST.CONTINUOUS, name='flow')
+        max_flow = max(self.line_shifts.values()) * max(self.product_capacity.values())
+        self.m_flow = self.model.addVars(keys, lb=0, ub=max_flow, vtype=self.model.CONST.CONTINUOUS, name='flow')
 
         self.m_is_valid_line = self.model.addVars(self.ky_factory_lines, vtype=self.model.CONST.BINARY, name='is_line')
 
