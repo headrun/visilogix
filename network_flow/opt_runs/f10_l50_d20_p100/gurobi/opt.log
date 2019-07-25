@@ -13,14 +13,14 @@ Variable types: 100000 continuous, 50 integer (50 binary)
 Coefficient statistics:
   Matrix range     [4e-01, 8e+03]
   Objective range  [1e+00, 2e+05]
-  Bounds range     [1e+00, 1e+00]
+  Bounds range     [1e+00, 2e+04]
   RHS range        [1e+00, 1e+03]
 Presolve removed 1204 rows and 60006 columns
-Presolve time: 0.55s
+Presolve time: 0.52s
 Presolved: 856 rows, 40044 columns, 80086 nonzeros
 Variable types: 40002 continuous, 42 integer (42 binary)
 
-Root relaxation: objective 7.897144e+09, 1663 iterations, 0.13 seconds
+Root relaxation: objective 7.897144e+09, 1663 iterations, 0.09 seconds
 
     Nodes    |    Current Node    |     Objective Bounds      |     Work
  Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
@@ -38,7 +38,7 @@ H    0     0                    9.581763e+09 7.8971e+09  17.6%     -    1s
      0     0 8.1976e+09    0   39 9.5818e+09 8.1976e+09  14.4%     -    1s
      0     0 8.2131e+09    0   39 9.5818e+09 8.2131e+09  14.3%     -    1s
      0     0 8.2234e+09    0   38 9.5818e+09 8.2234e+09  14.2%     -    1s
-     0     0 8.2300e+09    0   37 9.5818e+09 8.2300e+09  14.1%     -    2s
+     0     0 8.2300e+09    0   37 9.5818e+09 8.2300e+09  14.1%     -    1s
      0     0 8.2373e+09    0   34 9.5818e+09 8.2373e+09  14.0%     -    2s
      0     0 8.2428e+09    0   35 9.5818e+09 8.2428e+09  14.0%     -    2s
      0     0 8.2487e+09    0   36 9.5818e+09 8.2487e+09  13.9%     -    2s
@@ -60,8 +60,8 @@ H    0     0                    8.906700e+09 8.2849e+09  6.98%     -    3s
      0     0 8.3280e+09    0   35 8.9067e+09 8.3280e+09  6.50%     -    3s
      0     0 8.3309e+09    0   33 8.9067e+09 8.3309e+09  6.47%     -    3s
      0     0 8.3343e+09    0   32 8.9067e+09 8.3343e+09  6.43%     -    3s
-     0     0 8.3358e+09    0   31 8.9067e+09 8.3358e+09  6.41%     -    4s
-     0     0 8.3372e+09    0   32 8.9067e+09 8.3372e+09  6.39%     -    4s
+     0     0 8.3358e+09    0   31 8.9067e+09 8.3358e+09  6.41%     -    3s
+     0     0 8.3372e+09    0   32 8.9067e+09 8.3372e+09  6.39%     -    3s
      0     0 8.3383e+09    0   32 8.9067e+09 8.3383e+09  6.38%     -    4s
      0     0 8.3388e+09    0   32 8.9067e+09 8.3388e+09  6.38%     -    4s
      0     0 8.3390e+09    0   32 8.9067e+09 8.3390e+09  6.37%     -    4s
@@ -78,7 +78,7 @@ Cutting planes:
   MIR: 13
   Flow cover: 119
 
-Explored 1 nodes (6421 simplex iterations) in 5.14 seconds
+Explored 1 nodes (6421 simplex iterations) in 5.04 seconds
 Thread count was 4 (of 4 available processors)
 
 Solution count 5: 8.357e+09 8.9067e+09 9.58176e+09 ... 9.85999e+09
@@ -974,4 +974,4 @@ Lines:
       ('F10', 'L49') : 100.00%
       ('F10', 'L50') : .....close
 
-Time Taken: 9.784292221069336
+Time Taken: 9.82840371131897

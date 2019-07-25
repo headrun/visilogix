@@ -1,7 +1,7 @@
 
-Gurobi 8.1.1 (linux64) logging started Sat Jul 20 00:53:44 2019
+Gurobi 8.1.1 (linux64) logging started Thu Jul 25 23:57:12 2019
 
-Changed value of parameter LogFile to opt_runs/sample/gurobi.log
+Changed value of parameter LogFile to opt_runs/sample/gurobi/gurobi.log
    Prev: gurobi.log  Default: 
 Parameter OutputFlag unchanged
    Value: 1  Min: 0  Max: 1  Default: 1
@@ -10,7 +10,7 @@ Variable types: 675 continuous, 27 integer (27 binary)
 Coefficient statistics:
   Matrix range     [3e-01, 8e+03]
   Objective range  [4e+02, 1e+05]
-  Bounds range     [1e+00, 1e+00]
+  Bounds range     [1e+00, 3e+04]
   RHS range        [1e+00, 2e+04]
 Found heuristic solution: objective 7.432144e+09
 Presolve removed 4 rows and 511 columns
@@ -34,17 +34,16 @@ Cutting planes:
   MIR: 1
   Flow cover: 1
 
-Explored 1 nodes (103 simplex iterations) in 0.00 seconds
+Explored 1 nodes (102 simplex iterations) in 0.00 seconds
 Thread count was 4 (of 4 available processors)
 
 Solution count 3: 5.11162e+09 5.1407e+09 7.43214e+09 
-No other solutions better than 5.11162e+09
 
 Optimal solution found (tolerance 1.00e-04)
-Best objective 5.111619425124e+09, best bound 5.111619425124e+09, gap 0.0000%
+Best objective 5.111619424738e+09, best bound 5.111619424738e+09, gap 0.0000%
 
 Solution quality statistics for model Unnamed :
   Maximum violation:
     Bound       : 0.00000000e+00
-    Constraint  : 9.09494702e-13 (R13)
+    Constraint  : 2.72848411e-12 (R8)
     Integrality : 0.00000000e+00

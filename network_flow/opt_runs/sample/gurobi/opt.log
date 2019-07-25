@@ -1,10 +1,9 @@
-{'cost_factor': 1, 'flow_factor': 1}
 
 --------------------------------------------
-Warning: your license will expire in 6 days
+Warning: your license will expire in 1 days
 --------------------------------------------
 
-Changed value of parameter LogFile to opt_runs/sample/gurobi.log
+Changed value of parameter LogFile to opt_runs/sample/gurobi/gurobi.log
    Prev: gurobi.log  Default: 
 Parameter OutputFlag unchanged
    Value: 1  Min: 0  Max: 1  Default: 1
@@ -14,7 +13,7 @@ Variable types: 675 continuous, 27 integer (27 binary)
 Coefficient statistics:
   Matrix range     [3e-01, 8e+03]
   Objective range  [4e+02, 1e+05]
-  Bounds range     [1e+00, 1e+00]
+  Bounds range     [1e+00, 3e+04]
   RHS range        [1e+00, 2e+04]
 Found heuristic solution: objective 7.432144e+09
 Presolve removed 4 rows and 511 columns
@@ -38,15 +37,20 @@ Cutting planes:
   MIR: 1
   Flow cover: 1
 
-Explored 1 nodes (103 simplex iterations) in 0.00 seconds
+Explored 1 nodes (102 simplex iterations) in 0.00 seconds
 Thread count was 4 (of 4 available processors)
 
 Solution count 3: 5.11162e+09 5.1407e+09 7.43214e+09 
-No other solutions better than 5.11162e+09
 
 Optimal solution found (tolerance 1.00e-04)
-Best objective 5.111619425124e+09, best bound 5.111619425124e+09, gap 0.0000%
-...  Optimal Cost: 5,111,619,425.12
+Best objective 5.111619424738e+09, best bound 5.111619424738e+09, gap 0.0000%
+
+Solution quality statistics for model Unnamed :
+  Maximum violation:
+    Bound       : 0.00000000e+00
+    Constraint  : 2.72848411e-12 (R8)
+    Integrality : 0.00000000e+00
+...  Optimal Cost: 5,111,619,424.74
 Network Flow: 1
           ('FC01', 'LN01', 'CD02', 'P1') :       3,732.94
           ('FC01', 'LN01', 'CD04', 'P1') :       17,535.0
@@ -117,10 +121,4 @@ Lines:
     ('FC05', 'LN03') : 100.00%
     ('FC05', 'LN04') : 100.00%
 
-
-Solution quality statistics for model Unnamed :
-  Maximum violation:
-    Bound       : 0.00000000e+00
-    Constraint  : 9.09494702e-13 (R13)
-    Integrality : 0.00000000e+00
-Time Taken: 0.10744881629943848
+Time Taken: 0.11272549629211426
