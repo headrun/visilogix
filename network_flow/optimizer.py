@@ -73,6 +73,7 @@ class Optimizer:
         name = self.options.model
         cfg = self.config['model'].get(name, {})
 
+        # To support running different models with command line argument.
         self.model = getattr(__import__('%s_model' % name), '%sModel' % name.capitalize())()
         self.model.init(cfg)
 
@@ -82,6 +83,7 @@ class Optimizer:
             self.model.setParam(param, value)
 
     def init_variables(self):
+        # List of (factory, line) tuples
         self.ky_factory_lines = sorted(self.factory_lines.keys())
 
         self.ns_factory = sorted(list(set([f for f, l in self.ky_factory_lines])))
@@ -96,6 +98,7 @@ class Optimizer:
             for p    in self.ns_product
         ]
         max_flow = max(self.line_shifts.values()) * max(self.product_capacity.values())
+        # variable type is choosen as CONTINUOUS instead of INTEGER. Was not able to run gurobi algo with INTEGER variable on 4 core and 8GB RAM.
         self.m_flow = self.model.addVars(keys, lb=0, ub=max_flow, vtype=self.model.CONST.CONTINUOUS, name='flow')
 
         self.m_is_valid_line = self.model.addVars(self.ky_factory_lines, vtype=self.model.CONST.BINARY, name='is_line')
@@ -106,7 +109,7 @@ class Optimizer:
         for f in self.ns_factory:
             num_lines = len(self.m_is_valid_line.select(f, '*'))
 
-            # max lines in a factory
+            # max lines allowed in a factory
             self.model.addConstr(
                 self.m_is_valid_line.sum(f, '*') <= self.factory_max_line.get(f, num_lines)
             )
@@ -115,12 +118,13 @@ class Optimizer:
         self.hours_per_shift = self.config_data['line_shifts']['hours']
         for f, l in self.ky_factory_lines:
 
-            # flow <= supply
+            # setting the flow to 0, if product_capacity on (factory, line) is 0.
             for p in self.ns_product:
                 if not capacity_lambda((f, l, p)):
                     for d in self.ns_depot:
                         self.model.setValue(self.m_flow[f, l, d, p], 0)
 
+            # for each (factory, line), sum of production hours per product <= max production hours per line
             self.model.addConstr(
                 sum([
                     (self.m_flow.sum(f, l, '*', p) * self.hours_per_shift) / capacity_lambda((f, l, p))
@@ -131,38 +135,40 @@ class Optimizer:
 
         for d in self.ns_depot:
             for p in self.ns_product:
-                # flow >= demand
+                # sum of flow per depot per product >= demand per depot per product
                 self.model.addConstr(
                     self.m_flow.sum('*', '*', d, p) >= self.depot_demand.get((d, p), 0)
                 )
 
     def set_objective(self):
         self.model.setObjective(
-            # Fixed Cost
+            # Sum of Fixed Cost per active factory
             sum(
                 self.factory_fixed_cost[f] * (1 if self.m_is_valid_line.sum(f, '*') else 0)
                 for f in self.ns_factory
             ) +
-            # line capex
+            # Sum of Fixed Cost per active line
             sum(
                 self.line_capex.get(l, 0) * self.m_is_valid_line[f, l]
                 for f, l in self.ky_factory_lines
             ) +
-            # manufacturing cost
+            # Manufacturing Cost
             sum(
                 self.m_flow.sum(f, l, '*', p) * sum(self.product_manufacturing_cost.get((f, l, p), {}).values())
                 for f, l in self.ky_factory_lines
                 for p    in self.ns_product
             ) +
-            # Transportation cost
+            # Transportation Cost
             sum(
-                #math.ceil
+                # Ideally the below line should be math.ceil(flow/lodability)*frieght, but couldn't use ceil on variables.
+                # Hence, approximated ceil with (flow/lodability+1)*freight and there could be an error in the optimal solution.
+                # Need to estimate the error %.
                 (self.m_flow.sum(f, '*', d, p) / self.product_lodability[p] + 1) * self.freight.get((f, d), 0)
                 for f in self.ns_factory
                 for d in self.ns_depot
                 for p in self.ns_product
             ) -
-            # depot product benefit
+            # Savings by manufacturing in certain factories and shipping to certain depots.
             sum(
                 self.m_flow.sum(f, '*', d, p) * self.depot_benefit.get((f, d, p), 0)
                 for f in self.ns_factory
@@ -244,19 +250,20 @@ class Optimizer:
         for f in self.ns_factory:
             num_lines = len(self.m_is_valid_line.select(f, '*'))
 
-            # max lines in a factory
+            # max lines allowed in a factory
             assert self.m_is_valid_line.sum(f, '*') <= self.factory_max_line.get(f, num_lines)
 
         for f, l in self.ky_factory_lines:
             capacity_lambda = lambda x: self.product_capacity.get(x, 0)
             self.hours_per_shift = self.config_data['line_shifts']['hours']
 
-            # flow <= max supply
+            # flow should be 0, if product_capacity on (factory, line) is 0.
             for p in self.ns_product:
                 if not capacity_lambda((f, l, p)):
                     for d in self.ns_depot:
                         assert self.model.getValue(self.m_flow[f, l, d, p]) == 0
 
+            # for each (factory, line), sum of production hours per product <= max production hours per line
             assert sum([
                     (self.m_flow.sum(f, l, '*', p) * self.hours_per_shift) / capacity_lambda((f, l, p))
                     for p in self.ns_product
@@ -265,7 +272,7 @@ class Optimizer:
 
         for d in self.ns_depot:
             for p in self.ns_product:
-                # flow >= demand
+                # sum of flow per depot per product >= demand per depot per product
                 assert self.m_flow.sum('*', '*', d, p) >= self.depot_demand.get((d, p), 0)
 
 if __name__ == '__main__':
