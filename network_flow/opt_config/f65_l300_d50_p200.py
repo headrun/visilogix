@@ -9,6 +9,7 @@
     },
     'output': {
         # scaling factors the flow needs to be multiplied with. This is because of production capacity and demand value_func. The unit considered for the algo is 10Tons and then multiplying by 10 to get result in Tons. This is to reduce the range of coefficients, which helped the gurobi algo to give optimal solution in less than an hour.
+        'obj_factor': 10,
         'flow_factor': 10,
     },
     'data': {
@@ -16,6 +17,7 @@
             'sheet': 'Factory',
             'key': 1, #column num
             'value': 2, #column num
+            'value_func': lambda x: 0.1*x, #scaling down because of product_capacity value_func
         },
         'factory_max_line': {
             'sheet': 'Factory',
@@ -32,6 +34,7 @@
             'sheet': 'Factory Line',
             'key': (1, 2), #column num
             'value': 4, #column num
+            'value_func': lambda x: 0.1*x, #scaling down because of product_capacity value_func
         },
         'line_shifts': { # shifts per line per year
             'sheet': 'Factory Line',

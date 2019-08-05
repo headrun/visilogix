@@ -124,7 +124,7 @@ Solution count 8: 7.60876e+10 7.61037e+10 7.61051e+10 ... 7.6249e+10
 
 Optimal solution found (tolerance 1.00e-04)
 Best objective 7.608762647289e+10, best bound 7.608206717523e+10, gap 0.0073%
-...  Optimal Cost: 76,087,626,472.89
+...  Optimal Cost: 760,876,264,728.90
 Network Flow: 10
           ('F01', 'L001', 'D04', 'P065') :          773.0
           ('F01', 'L001', 'D04', 'P131') :          300.0
