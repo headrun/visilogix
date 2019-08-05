@@ -16,20 +16,21 @@
     'depot': {
         'prefix': 'D',
         'count': 50,
-        'freight': (1, 20, 10**4),
+        'freight': (1, 20, 10**4),#min, max, unit
     },
     'product': {
         'prefix': 'P',
         'count': 200,
-        'lodability': (1, 7, 4, 3),
+        'lodability': (1, 7, 4, 3),#min, max, mean, sd
 
-        'capacity': (10, 20),
-        'labour': (2, 15, 10**3),
-        'power': (3, 20, 10**2),
-        'fuel': (5, 70, 10**2),
+        'capacity': (10, 20),#min, max
+        'labour': (2, 15, 10**3),#min, max, unit
+        'power': (3, 20, 10**2),#min, max, unit
+        'fuel': (5, 70, 10**2),#min, max, unit
 
         'factory_fiscal': 2, #%
-        'fiscal': (1, 50, 10**3),
-        'demand': (1, 10**3, 1, 40),
+        'fiscal': (1, 50, 10**3),#min, max, unit
+
+        'demand': (1, 10**3, 1, 40),#min, max, unit, %
     },
 }
